@@ -1,0 +1,19 @@
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.openById('1KKF56bJ9nzztqISvutPaPVUfGqR6vyiGNTavBurLWSA').getActiveSheet();
+    sheet.appendRow([
+      data.customer,
+      data.location,
+      data.refNo,
+      data.start,
+      data.total,
+      data.toll,
+      data.parking,
+      new Date()
+    ]);
+    return ContentService.createTextOutput(JSON.stringify({success: true}));
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({success: false, error: error.message}));
+  }
+}
