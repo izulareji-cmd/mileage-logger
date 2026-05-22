@@ -19,6 +19,8 @@
     <button type="submit">Save Entry</button>
   </form>
 
+  <div id="records"></div>
+
   <script>
     function calcEnd() {
       var start = parseFloat(document.getElementById('start').value);
@@ -29,7 +31,7 @@
     }
 
     function submitForm() {
-      fetch('https://script.google.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec', {
+      fetch('https://script.google.com/macros/s/AKfyc.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -48,9 +50,35 @@
       .then(data => {
         if (data.success) {
           alert('Entry saved');
+          displayRecords();
         } else {
           alert('Error: ' + data.error);
         }
+      })
+      .catch(error => {
+        alert('Error: ' + error);
+      });
+    }
+
+    function displayRecords() {
+      fetch('https://script.google.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec')
+      .then(response => response.json())
+      .then(data => {
+        let records = data.records;
+        let html = '';
+        records.forEach(record => {
+          html += `
+            <p>Customer: ${record.customer}</p>
+            <p>Location: ${record.location}</p>
+            <p>Ref No: ${record.refNo}</p>
+            <p>Start: ${record.start}</p>
+            <p>Total: ${record.total}</p>
+            <p>Toll: ${record.toll}</p>
+            <p>Parking: ${record.parking}</p>
+            <hr>
+          `;
+        });
+        document.getElementById('records').innerHTML = html;
       })
       .catch(error => {
         alert('Error: ' + error);
@@ -62,6 +90,8 @@
       e.preventDefault();
       submitForm();
     });
+
+    displayRecords();
   </script>
 </body>
 </html>
