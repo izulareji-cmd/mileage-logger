@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mileage Logger</title>
-  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Mileage Logger</h1>
@@ -12,18 +11,22 @@
     <input id="customer" type="text" placeholder="Customer">
     <input id="location" type="text" placeholder="Location">
     <input id="refNo" type="text" placeholder="Ref No">
-    <input id="start" type="text" placeholder="Start">
-    <input id="total" type="number" placeholder="Total">
+    <input id="start" type="number" placeholder="Start">
+    <input id="end" type="number" placeholder="End">
+    <input id="total" type="number" placeholder="Total" readonly>
     <input id="toll" type="number" placeholder="Toll">
     <input id="parking" type="number" placeholder="Parking">
     <button type="submit">Submit</button>
   </form>
 
   <script>
-    document.getElementById('mileage-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      submit();
-    });
+    function calcEnd() {
+      var start = parseFloat(document.getElementById('start').value);
+      var end = parseFloat(document.getElementById('end').value);
+      if (!isNaN(start) && !isNaN(end)) {
+        document.getElementById('total').value = end - start;
+      }
+    }
 
     function submit() {
       fetch('https://script.google.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec', {
@@ -44,29 +47,21 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          showToast('Entry saved', 'success');
-          clearForm();
-          loadRecords();
+          alert('Entry saved');
         } else {
-          showToast('Error: ' + data.error, 'error');
+          alert('Error: ' + data.error);
         }
       })
       .catch(error => {
-        showToast('Error: ' + error, 'error');
+        alert('Error: ' + error);
       });
     }
 
-    function showToast(message, type) {
-      // implement toast
-    }
-
-    function clearForm() {
-      // implement clear form
-    }
-
-    function loadRecords() {
-      // implement load records
-    }
+    document.getElementById('end').addEventListener('input', calcEnd);
+    document.getElementById('mileage-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      submit();
+    });
   </script>
 </body>
 </html>
