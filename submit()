@@ -1,0 +1,28 @@
+fetch('https://script.google.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    customer: document.getElementById('customer').value,
+    location: document.getElementById('location').value,
+    refNo: document.getElementById('refNo').value,
+    start: document.getElementById('start').value,
+    total: document.getElementById('total').value,
+    toll: document.getElementById('toll').value,
+    parking: document.getElementById('parking').value
+  })
+})
+.then(response => response.json())
+.then(data => {
+  if (data.success) {
+    showToast('Entry saved', 'success');
+    clearForm();
+    loadRecords();
+  } else {
+    showToast('Error: ' + data.error, 'error');
+  }
+})
+.catch(error => {
+  showToast('Error: ' + error, 'error');
+});
