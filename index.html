@@ -16,7 +16,7 @@
     <input id="total" type="number" placeholder="Total" readonly>
     <input id="toll" type="number" placeholder="Toll">
     <input id="parking" type="number" placeholder="Parking">
-    <button type="submit">Submit</button>
+    <button type="submit">Save Entry</button>
   </form>
 
   <script>
@@ -28,7 +28,7 @@
       }
     }
 
-    function submit() {
+    function submitForm() {
       fetch('https://script.google.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec', {
         method: 'POST',
         headers: {
@@ -60,7 +60,7 @@
     document.getElementById('end').addEventListener('input', calcEnd);
     document.getElementById('mileage-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      submit();
+      submitForm();
     });
   </script>
 </body>
