@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mileage Logger</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Mileage Logger</h1>
+  <form id="mileage-form">
+    <input id="customer" type="text" placeholder="Customer">
+    <input id="location" type="text" placeholder="Location">
+    <input id="refNo" type="text" placeholder="Ref No">
+    <input id="start" type="number" placeholder="Start" oninput="calcEnd()">
+    <input id="end" type="number" placeholder="End">
+    <input id="total" type="number" placeholder="Total" readonly>
+    <input id="toll" type="number" placeholder="Toll">
+    <input id="parking" type="number" placeholder="Parking">
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    function calcEnd() {
+      var start = parseFloat(document.getElementById('start').value);
+      var end = parseFloat(document.getElementById('end').value);
+      if (!isNaN(start) && !isNaN(end)) {
+        document.getElementById('total').value = end - start;
+      }
+    }
+
+    document.getElementById('mileage-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      submit();
+    });
+
+    function submit() {
+      fetch('https://script.google.com/macros/s/AKfycbzdRGwXszvOJMRJ3lsOZx2wHzAm7z8z7x2DH1M3baRqa83xdcnjuERWmrDCWWD0fu0GcA/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          customer: document.getElementById('customer').value,
+          location: document.getElementById('location').value,
+          refNo: document.getElementById('refNo').value,
+          start: document.getElementById('start').value,
+          total: document.getElementById('total').value,
+          toll: document.getElementById('toll').value,
+          parking: document.getElementById('parking').value
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showToast('Entry saved', 'success');
+          clearForm();
+          loadRecords();
+        } else {
+          showToast('Error: ' + data.error, 'error');
+        }
+      })
+      .catch(error => {
+        showToast('Error: ' + error, 'error');
+      });
+    }
+
+    function showToast(message, type) {
+      // implement toast
+    }
+
+    function clearForm() {
+      // implement clear form
+    }
+
+    function loadRecords() {
+      // implement load records
+    }
+  </script>
+</body>
+</html>
